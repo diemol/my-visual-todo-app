@@ -9,7 +9,7 @@ const deleteItem = require('./routes/deleteItem');
 const deleteItems = require('./routes/deleteItems');
 
 app.use(basicAuth({
-    users: { 'admin': 'supersecret' },
+    users: { 'admin': 'admin' },
     challenge: true,
     unauthorizedResponse: getUnauthorizedResponse
 }))
