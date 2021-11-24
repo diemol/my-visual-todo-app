@@ -166,7 +166,7 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                         />
                     </Button>
                 </Col>
-                <Col xs={10} className="name">
+                <Col xs={10} className="name" data-testid = "item-name">
                     {item.name}
                 </Col>
                 <Col xs={1} className="text-center remove">
