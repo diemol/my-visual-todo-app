@@ -2,3 +2,10 @@
 tasks:
   - init: npm install
     command: npm run dev
+
+ports:
+  - name: Web App
+    description: The main application web server
+    port: 3000
+    onOpen: open-browser
+    visibility: public
