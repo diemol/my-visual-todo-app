@@ -16,20 +16,20 @@ function TodoListCard() {
 
     React.useEffect(() => {
         fetch('/items')
-            .then(r => r.json())
+            .then((r) => r.json())
             .then(setItems);
     }, []);
 
     const onNewItem = React.useCallback(
-        newItem => {
+        (newItem) => {
             setItems([...items, newItem]);
         },
         [items],
     );
 
     const onItemUpdate = React.useCallback(
-        item => {
-            const index = items.findIndex(i => i.id === item.id);
+        (item) => {
+            const index = items.findIndex((i) => i.id === item.id);
             setItems([
                 ...items.slice(0, index),
                 item,
@@ -40,8 +40,8 @@ function TodoListCard() {
     );
 
     const onItemRemoval = React.useCallback(
-        item => {
-            const index = items.findIndex(i => i.id === item.id);
+        (item) => {
+            const index = items.findIndex((i) => i.id === item.id);
             setItems([...items.slice(0, index), ...items.slice(index + 1)]);
         },
         [items],
@@ -50,12 +50,12 @@ function TodoListCard() {
     if (items === null) return 'Loading...';
 
     return (
-        <React.Fragment>            
+        <React.Fragment>
             <AddItemForm onNewItem={onNewItem} />
             {items.length === 0 && (
                 <p className="text-center">No items yet! Add one above!</p>
             )}
-            {items.reverse().map(item => (
+            {items.reverse().map((item) => (
                 <ItemDisplay
                     item={item}
                     key={item.id}
@@ -73,7 +73,7 @@ function AddItemForm({ onNewItem }) {
     const [newItem, setNewItem] = React.useState('');
     const [submitting, setSubmitting] = React.useState(false);
 
-    const submitNewItem = e => {
+    const submitNewItem = (e) => {
         e.preventDefault();
         setSubmitting(true);
         fetch('/items', {
@@ -81,8 +81,8 @@ function AddItemForm({ onNewItem }) {
             body: JSON.stringify({ name: newItem }),
             headers: { 'Content-Type': 'application/json' },
         })
-            .then(r => r.json())
-            .then(item => {
+            .then((r) => r.json())
+            .then((item) => {
                 onNewItem(item);
                 setSubmitting(false);
                 setNewItem('');
@@ -94,7 +94,7 @@ function AddItemForm({ onNewItem }) {
             <InputGroup className="mb-3">
                 <Form.Control
                     value={newItem}
-                    onChange={e => setNewItem(e.target.value)}
+                    onChange={(e) => setNewItem(e.target.value)}
                     type="text"
                     placeholder="New Item"
                     aria-describedby="basic-addon1"
@@ -128,7 +128,7 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
             }),
             headers: { 'Content-Type': 'application/json' },
         })
-            .then(r => r.json())
+            .then((r) => r.json())
             .then(onItemUpdate);
     };
 
@@ -139,9 +139,9 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
     };
 
     return (
-        <Container 
-            fluid 
-            className={`item ${item.completed && 'completed'}`} 
+        <Container
+            fluid
+            className={`item ${item.completed && 'completed'}`}
             data-testid={item.name}
         >
             <Row>
@@ -159,14 +159,14 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
                         }
                     >
                         <i
-                            onClick={toggleCompletion}                            
+                            onClick={toggleCompletion}
                             className={`far ${
                                 item.completed ? 'fa-check-square' : 'fa-square'
                             }`}
                         />
                     </Button>
                 </Col>
-                <Col xs={10} className="name" data-testid = "item-name">
+                <Col xs={10} className="name" data-testid="item-name">
                     {item.name}
                 </Col>
                 <Col xs={1} className="text-center remove">
@@ -183,7 +183,10 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
             </Row>
             <Row className="pt-2">
                 <Col xs={12} className="text-center">
-                    <Image src={`https://source.unsplash.com/random/450x200?${item.name}`} thumbnail />
+                    <Image
+                        src={`https://source.unsplash.com/random/450x200?${item.name}`}
+                        thumbnail
+                    />
                 </Col>
             </Row>
         </Container>

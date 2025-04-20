@@ -21,7 +21,7 @@ async function init() {
     const password = PASSWORD_FILE ? fs.readFileSync(PASSWORD_FILE) : PASSWORD;
     const database = DB_FILE ? fs.readFileSync(DB_FILE) : DB;
 
-    await waitPort({ host, port : 3306, timeout: 15000 });
+    await waitPort({ host, port: 3306, timeout: 15000 });
 
     pool = mysql.createPool({
         connectionLimit: 5,
@@ -34,7 +34,7 @@ async function init() {
     return new Promise((acc, rej) => {
         pool.query(
             'CREATE TABLE IF NOT EXISTS todo_items (id varchar(36), name varchar(255), completed boolean)',
-            err => {
+            (err) => {
                 if (err) return rej(err);
 
                 console.log(`Connected to mysql db at host ${HOST}`);
@@ -46,7 +46,7 @@ async function init() {
 
 async function teardown() {
     return new Promise((acc, rej) => {
-        pool.end(err => {
+        pool.end((err) => {
             if (err) rej(err);
             else acc();
         });
@@ -58,7 +58,7 @@ async function getItems() {
         pool.query('SELECT * FROM todo_items', (err, rows) => {
             if (err) return rej(err);
             acc(
-                rows.map(item =>
+                rows.map((item) =>
                     Object.assign({}, item, {
                         completed: item.completed === 1,
                     }),
@@ -73,7 +73,7 @@ async function getItem(id) {
         pool.query('SELECT * FROM todo_items WHERE id=?', [id], (err, rows) => {
             if (err) return rej(err);
             acc(
-                rows.map(item =>
+                rows.map((item) =>
                     Object.assign({}, item, {
                         completed: item.completed === 1,
                     }),
@@ -88,7 +88,7 @@ async function storeItem(item) {
         pool.query(
             'INSERT INTO todo_items (id, name, completed) VALUES (?, ?, ?)',
             [item.id, item.name, item.completed ? 1 : 0],
-            err => {
+            (err) => {
                 if (err) return rej(err);
                 acc();
             },
@@ -101,7 +101,7 @@ async function updateItem(id, item) {
         pool.query(
             'UPDATE todo_items SET name=?, completed=? WHERE id=?',
             [item.name, item.completed ? 1 : 0, id],
-            err => {
+            (err) => {
                 if (err) return rej(err);
                 acc();
             },
@@ -111,7 +111,7 @@ async function updateItem(id, item) {
 
 async function removeItem(id) {
     return new Promise((acc, rej) => {
-        pool.query('DELETE FROM todo_items WHERE id = ?', [id], err => {
+        pool.query('DELETE FROM todo_items WHERE id = ?', [id], (err) => {
             if (err) return rej(err);
             acc();
         });

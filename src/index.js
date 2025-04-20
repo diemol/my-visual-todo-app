@@ -18,17 +18,22 @@ app.delete('/items/:id', deleteItem);
 
 const appPort = process.env.PORT ? process.env.PORT : 3000;
 
-db.init().then(() => {
+try {
+    db.init();
     app.listen(appPort, () => console.log(`Listening on port ${appPort}`));
-}).catch((err) => {
+} catch (err) {
     console.error(err);
     process.exit(1);
-});
+}
 
 const gracefulShutdown = () => {
-    db.teardown()
-        .catch(() => {})
-        .then(() => process.exit());
+    try {
+        db.teardown();
+    } catch (e) {
+        console.error('Error during DB teardown:', e);
+    } finally {
+        process.exit();
+    }
 };
 
 process.on('SIGINT', gracefulShutdown);
