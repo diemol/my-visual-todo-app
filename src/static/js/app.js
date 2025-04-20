@@ -183,8 +183,8 @@ function ItemDisplay({ item, onItemUpdate, onItemRemoval }) {
             </Row>
             <Row className="pt-2">
                 <Col xs={12} className="text-center">
-                    <Image
-                        src={`https://source.unsplash.com/random/450x200?${item.name}`}
+            <Image
+                        src={`https://picsum.photos/seed/${encodeURIComponent(item.name)}/450/200`}
                         thumbnail
                     />
                 </Col>
