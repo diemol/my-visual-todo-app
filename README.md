@@ -13,5 +13,4 @@ testing.
 3. Head to http://localhost:3000 `(admin:admin)`
 
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/diemol/my-visual-todo-app)
 

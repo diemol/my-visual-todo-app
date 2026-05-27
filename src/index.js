@@ -6,10 +6,20 @@ const addItem = require('./routes/addItem');
 const updateItem = require('./routes/updateItem');
 const deleteItem = require('./routes/deleteItem');
 const deleteItems = require('./routes/deleteItems');
+const basicAuth = require('./routes/basicAuth');
+const session = require('./routes/sessionPage');
+const jwt = require('./routes/jwtPage');
 
 app.use(require('body-parser').json());
 app.use(express.static(__dirname + '/static'));
 
+app.get('/basic-auth', basicAuth);
+app.get('/session', session.page);
+app.post('/session/login', session.login);
+app.post('/session/logout', session.logout);
+app.get('/jwt', jwt.page);
+app.post('/jwt/login', jwt.login);
+app.get('/jwt/verify', jwt.verify);
 app.get('/items', getItems);
 app.post('/items', addItem);
 app.delete('/items', deleteItems);
