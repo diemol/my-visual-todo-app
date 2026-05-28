@@ -10,7 +10,7 @@ testing.
 ## How to get the app running
 1. `npm install`
 2. `npm run dev`
-3. Head to http://localhost:3000 `(admin:admin)`
+3. Head to http://localhost:4000 `(admin:admin)`
 
 
 

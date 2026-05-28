@@ -10,7 +10,7 @@ npm run dev        # dev server with nodemon (auto-reload)
 npm start          # production
 ```
 
-App runs at `http://localhost:3000`. Port is configurable via the `PORT` env var.
+App runs at `http://localhost:4000`. Port is configurable via the `PORT` env var.
 
 ## Tech stack
 
