@@ -1,5 +1,17 @@
 function App() {
     const { Container, Row, Col } = ReactBootstrap;
+
+    React.useEffect(() => {
+        // Intentional startup errors — harmless demo artifacts for test capture.
+        // Simulate optional modules that are not present in this environment.
+        try { window.__APP_CONFIG__.version; } catch (e) {
+            console.error('[App] Configuration not found, using defaults:', e.message);
+        }
+        try { window.__analytics.init(); } catch (e) {
+            console.error('[Analytics] Analytics module unavailable:', e.message);
+        }
+    }, []);
+
     return (
         <Container>
             <Row>
@@ -22,6 +34,10 @@ function TodoListCard() {
 
     const onNewItem = React.useCallback(
         (newItem) => {
+            console.log(`[TODO] Item added: "${newItem.name}" (id: ${newItem.id})`);
+            try { window.__analytics.track('item_added', { name: newItem.name }); } catch (e) {
+                console.error('[Analytics] Failed to track "item_added":', e.message);
+            }
             setItems([...items, newItem]);
         },
         [items],
@@ -29,6 +45,9 @@ function TodoListCard() {
 
     const onItemUpdate = React.useCallback(
         (item) => {
+            console.log(
+                `[TODO] Item "${item.name}" marked as ${item.completed ? 'complete' : 'incomplete'} (id: ${item.id})`,
+            );
             const index = items.findIndex((i) => i.id === item.id);
             setItems([
                 ...items.slice(0, index),
@@ -41,6 +60,10 @@ function TodoListCard() {
 
     const onItemRemoval = React.useCallback(
         (item) => {
+            console.log(`[TODO] Item removed: "${item.name}" (id: ${item.id})`);
+            try { window.__analytics.track('item_removed', { name: item.name }); } catch (e) {
+                console.error('[Analytics] Failed to track "item_removed":', e.message);
+            }
             const index = items.findIndex((i) => i.id === item.id);
             setItems([...items.slice(0, index), ...items.slice(index + 1)]);
         },
@@ -49,9 +72,17 @@ function TodoListCard() {
 
     if (items === null) return 'Loading...';
 
+    const count = items.length;
+    const countLabel = `${count} ${count === 1 ? 'to-do' : 'to-dos'}`;
+
     return (
         <React.Fragment>
             <AddItemForm onNewItem={onNewItem} />
+            <p className="text-center mb-2">
+                <span className="item-counter" data-testid="item-count">
+                    {countLabel}
+                </span>
+            </p>
             {items.length === 0 && (
                 <p className="text-center">No items yet! Add one above!</p>
             )}
